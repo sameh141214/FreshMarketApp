@@ -1,0 +1,30 @@
+name: Build Fresh Market APK
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # دي عشان تقدر تشغله يدوي لو حبيت
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install flet
+          # لو عندك مكتبات تانية زي pandas أو sqlserver ضيفها هنا
+
+      - name: Build APK
+        run: flet build apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FreshMarket-APK
+          path: build/apk/*.apk
